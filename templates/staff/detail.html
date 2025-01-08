@@ -14,16 +14,21 @@
             <p>Ставка: {{ person.load }}</p>
             <h4>Дисциплины:</h4>
             <ul>
-                {% for discipline in person.disciplines %}
-                    <li>{{ discipline }}</li>
+                {% if person.disciplines.all %}
+                {% for discipline in person.disciplines.all %}
+                    <li> <a href="{% url 'staff:discipline_tutor' discipline.slug %}">
+                            {{ discipline.name }}</a></li>
                 {% endfor %}
+                {% else %}
+                        нет
+                {% endif %}
             </ul>
             <h4>Дополнительная работа:</h4>
-            <ul>
-                {% for task in person.tasks %}
-                    <li>{{ task }}</li>
-                {% endfor %}
-            </ul>
+            {% if person.additional_work %}
+                <p>{{ person.additional_work }}</p>
+            {% else %}
+                <p>Отсутсвует</p>
+            {% endif %}
             <a href="{% url 'staff:index' %}">Назад к списку</a>
         </article>
     </div>

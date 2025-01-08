@@ -1,12 +1,25 @@
 {% extends "base.html" %}
 {% load static %}
-{% block title %} <title>Дисциплина {{ discipline_slug }}</title>{% endblock %}
+{% block title %} <title>{{ discipline.name }}</title>{% endblock %}
 
 
 {% block content %}
 <main>
     <div class="container py-5">
-        <h1> Дисциплина {{ discipline_slug }}</h1>
+        <h1> Дисциплина {{ discipline.name }}</h1>
+        <p>{{ discipline.description }}</p>
+        <h2>Преподаватели курса:</h2>
+        {% if tutors %}
+            <ul>
+                {% for tutor in tutors %}
+                <li>
+                    <a href="{% url 'staff:staff_detail' tutor.id %}">{{ tutor.name }}</a>
+                </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>Нет преподавателей для данного курса.</p>
+        {% endif %}
     </div>
 </main>
 {% endblock %}
