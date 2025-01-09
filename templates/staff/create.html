@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% load django_bootstrap5 %}
+{% block title %}
+  {% if '/edit/' in request.path %}
+    Редактирование преподавателя
+  {% elif "/delete/" in request.path %}
+    Удаление преподавателя
+  {% else %}
+    Добавление преподавателя
+  {% endif %}
+{% endblock %}
+{% block content %}
+  <div class="col d-flex justify-content-center">
+    <div class="card" style="width: 40rem;">
+      <div class="card-header">
+        {% if '/edit/' in request.path %}
+          Редактирование преподавателя
+        {% elif '/delete/' in request.path %}
+          Удаление преподавателя
+        {% else %}
+          Добавление преподавателя
+        {% endif %}
+      </div>
+      <div class="card-body">
+        <form method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          {% if not '/delete/' in request.path %}
+            {% bootstrap_form form %}
+          {% else %}
+            <h1>{{ person.name }}</h1>
+            <p>Рабочее место: {{ person.workplace }}</p>
+            <p>Ставка: {{ person.load }}</p>
+            <h4>Дисциплины:</h4>
+            <ul>
+                {% if person.disciplines.all %}
+                {% for discipline in person.disciplines.all %}
+                    <li> <a href="{% url 'staff:discipline_tutor' discipline.slug %}">
+                            {{ discipline.name }}</a></li>
+                {% endfor %}
+                {% else %}
+                        нет
+                {% endif %}
+            </ul>
+            <h4>Дополнительная работа:</h4>
+            {% if person.additional_work %}
+                <p>{{ person.additional_work }}</p>
+            {% else %}
+                <p>Отсутсвует</p>
+            {% endif %}
+          {% endif %}
+          {% bootstrap_button button_type="submit" content="Отправить" %}
+        </form>
+      </div>
+    </div>
+  </div>
+{% endblock %}

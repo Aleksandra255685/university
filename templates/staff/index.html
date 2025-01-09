@@ -5,7 +5,7 @@
 <main>
     <div class="container py-5">
         <h1>Сотрудники</h1>
-        {% for person in staff %}
+        {% for person in page_obj %}
             <hr>
             <article>
                 <ul>
@@ -22,7 +22,7 @@
                 <a href="{% url 'staff:staff_detail' person.id %}">Подробнее</a>
             </article>
         {% endfor %}
-
+    {% include "includes/paginator.html" %}
     </div>
 </main>
 {% endblock %}
